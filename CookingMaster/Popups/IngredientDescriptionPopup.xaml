@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+             x:Class="CookingMaster.Popups.IngredientDescriptionPopup"
+                  xmlns:mopupanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+           xmlns:model ="clr-namespace:CookingMaster.Models"               
+       xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups" BackgroundColor="Transparent">
+    <mopups:PopupPage.Animation>
+        <mopupanim:ScaleAnimation
+            DurationIn="1700"
+            EasingIn="BounceOut"
+            PositionIn="Bottom"
+            PositionOut="Center"
+            ScaleIn="1"
+            ScaleOut="0.7"/>
+    </mopups:PopupPage.Animation>
+    <Border BackgroundColor="Black"
+            Opacity=".9">
+        <Border WidthRequest="300"                       
+                HeightRequest="350"
+                BackgroundColor="{StaticResource White}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,40,40,40"/>
+            </Border.StrokeShape>
+            <Grid RowDefinitions="40,50, *, 50" Padding="10,5">
+                <VerticalStackLayout>
+                    <Label  TextColor="{StaticResource Gray900}"
+                        Text="{Binding IngredientName} "
+                        VerticalOptions="Center" 
+                            FontSize="Subtitle"
+                        HorizontalOptions="Center" />
+                    <Label  TextColor="{StaticResource Gray900}"
+                            Text="100 gr"
+                            VerticalOptions="Center" 
+                            FontSize="13"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
+                <Border Padding="3" Grid.Row="1" StrokeThickness="0">
+                    <Image HorizontalOptions="CenterAndExpand"                              
+                            VerticalOptions="CenterAndExpand"
+                            Source="{Binding IconPath}"/>
+                </Border>
+
+                <ScrollView HorizontalOptions="Center" 
+                        Grid.Row="2"
+                    VerticalOptions="Center"
+                    Padding="3">
+                    <VerticalStackLayout>
+                        <Frame BackgroundColor="{StaticResource Gray500}" >
+                            <HorizontalStackLayout>
+                                <Label  TextColor="{StaticResource White}"
+                                Text="Calories: "
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                Text="{Binding IngredientNutrient.Calories}"
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                Text=" kcal"
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                        <Frame BackgroundColor="{StaticResource Gray200}">
+                            <HorizontalStackLayout>
+                                <Label  TextColor="{StaticResource Gray600}"
+                                 Text="Protein: "
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource Gray600}"
+                                 Text="{Binding IngredientNutrient.Protein}"
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource Gray600}"
+                                 Text=" grams"
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                        </Frame>
+                        <Frame BackgroundColor="{StaticResource Gray500}">
+                            <HorizontalStackLayout>
+                                <Label  TextColor="{StaticResource White}"
+                                    Text="Carbohydrates: "
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                    Text="{Binding IngredientNutrient.Carbohydrates}"
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                    Text=" grams"
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                        </Frame>
+                        <Frame BackgroundColor="{StaticResource Gray200}">
+                            <HorizontalStackLayout>
+                                <Label  TextColor="{StaticResource Gray600}"
+                                    Text="Fat: "
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource Gray600}"
+                                    Text="{Binding IngredientNutrient.Fat}"
+                                       VerticalOptions="Center" 
+                                       HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource Gray600}"
+                                       Text=" grams"
+                                       VerticalOptions="Center" 
+                                       HorizontalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                        </Frame>
+                        <Frame BackgroundColor="{StaticResource Gray500}">
+                            <HorizontalStackLayout>
+                                <Label  TextColor="{StaticResource White}"
+                                    Text="Sugar: "
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                    Text="{Binding IngredientNutrient.Sugar}"
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                                <Label TextColor="{StaticResource White}"
+                                    Text=" grams"
+                                    VerticalOptions="Center" 
+                                    HorizontalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                        </Frame>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+                <Button Grid.Row="3" 
+                    Text="Close" 
+                        x:Name="BtnClose"                   
+                    Clicked="BtnClose_Clicked"
+                        FontSize="Body"
+                        TextColor="{StaticResource Primary}"
+                    BackgroundColor="Transparent" 
+                    HorizontalOptions="CenterAndExpand"
+                    Margin="0, 5"/>
+            </Grid>
+
+        </Border>
+    </Border>
+
+
+
+</mopups:PopupPage>

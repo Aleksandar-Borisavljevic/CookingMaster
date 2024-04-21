@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="CookingMaster.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CookingMaster.Views.Pages"
+    Shell.FlyoutBehavior="Flyout" FlyoutIcon="list" FlyoutBehavior="Disabled">
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout>
+                        <Label Text="Welcome to Cooking Master" 
+                               TextColor="{x:StaticResource White}" 
+                               FontAttributes="Bold"
+                               FontSize="18" 
+                               HorizontalOptions="StartAndExpand"
+                               Opacity=".8"/>
+                        <Label Text="Cooking Software" 
+                               TextColor="{x:StaticResource White}" FontAttributes="Bold"
+                               FontSize="18" 
+                               HorizontalOptions="StartAndExpand"
+                               Opacity=".8"/>
+                    </StackLayout>
+                    <Image Source="banana.png" VerticalOptions="CenterAndExpand" Grid.Column="1" Opacity=".3" HorizontalOptions="CenterAndExpand"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+
+    <ShellContent   
+        Title="Login"
+        Route="LoginPage"
+        ContentTemplate="{DataTemplate local:LoginPage}"/>
+
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Recipes"              
+             Icon="myrecipes.png">
+            <ShellContent   
+                           Route="HomePage" 
+                          ContentTemplate="{DataTemplate local:HomePage}"/>
+        </Tab>
+        <Tab Title="My Kitchen"              
+             Icon="kitchen.png">
+            <ShellContent   
+                           Route="MyKitchenPage" 
+                          ContentTemplate="{DataTemplate local:MyKitchenPage}"/>
+        </Tab>
+        <Tab Title="Favorites"              
+             Icon="favorites.png">
+            <ShellContent   
+                           Route="MyCookBookPage" 
+                          ContentTemplate="{DataTemplate local:MyCookBookPage}"/>
+        </Tab>
+    </FlyoutItem>
+</Shell>

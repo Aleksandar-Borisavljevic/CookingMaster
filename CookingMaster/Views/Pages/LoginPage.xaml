@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             xmlns:model ="clr-namespace:CookingMaster.Model"
+             xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+             x:DataType="viewmodel:LoginViewModel"
+             x:Class="CookingMaster.Views.Pages.LoginPage"
+             Title="LoginPage" Shell.NavBarIsVisible="False">
+    <Grid BackgroundColor="White" RowDefinitions="220,*,50">
+        <Path Stroke="#fff" Fill="{StaticResource Primary}" Data="m0.30001,0l449,0l0,128.48327c-122.5,64.30167 -332.5,65.89076 -449.00002,47.71229l0,-337.70255z"/>
+        <skia:SKLottieView 
+                Source="loginlottie.json"
+                RepeatCount="-1"
+            HeightRequest="70"
+            WidthRequest="70"
+                SemanticProperties.Description="Loading..."
+            VerticalOptions="End"
+                HorizontalOptions="FillAndExpand"/>
+
+        <Grid RowSpacing="5" Grid.Row="1" Margin="20,20,20,0" RowDefinitions="*,40,40,Auto,40,*">
+            <Label Grid.Row="1" TextColor="Black" Text="Hey there, welcome back!" HorizontalOptions="Center" FontSize="Title" FontAttributes="Bold" Padding="0" Margin="0"/>
+            <Label Grid.Row="2" TextColor="{StaticResource Primary}" Text="Sign in or sign up for creating your kitchen." HorizontalOptions="Center" FontSize="Subtitle"/>
+            <VerticalStackLayout Grid.Row="3" HorizontalOptions="CenterAndExpand">
+                <Frame BackgroundColor="Transparent"  BorderColor="{StaticResource Primary}" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout >
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="user.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry Text="{Binding Email}" Placeholder="Email" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="0,10,0,0" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="password.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Password" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Grid Margin="0,10,0,0" Padding="0" HorizontalOptions="FillAndExpand">
+                    <HorizontalStackLayout HorizontalOptions="StartAndExpand">
+                        <CheckBox IsChecked="{Binding IsRememberMe}"/>
+                        <Label Text="Remember me" TextColor="{StaticResource Primary}" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Button BackgroundColor="Transparent" Text="Forgot Password" TextColor="{StaticResource Primary}" FontAttributes="Bold" 
+                            HorizontalOptions="EndAndExpand" Command="{Binding ForgotPasswordCommand}"/>
+                </Grid>
+                <Button Text="Login" CornerRadius="30" WidthRequest="200" Margin="0,15,0,0" Command="{Binding LoginCommand}"/>
+
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Margin="0,40,0,0" Padding="0">
+                    <Label Text="Don't have an account?" TextColor="{StaticResource Gray400}" FontSize="Small" VerticalOptions="CenterAndExpand"/>
+                    <Button BackgroundColor="Transparent" Text="Register now" FontAttributes="Bold" VerticalOptions="CenterAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" 
+                            Command="{Binding RegisterCommand}"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand"  Padding="0">
+                    <Button BackgroundColor="Transparent" Text="Log in as a guest" FontAttributes="Bold" VerticalOptions="CenterAndExpand" TextColor="{StaticResource Primary}" FontSize="Small" 
+                            Command="{Binding LoginAsGuestCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:CookingMaster.Models"
+             xmlns:culRecipeModel ="clr-namespace:CookingMaster.Models.CulinaryRecipeModels"             
+             xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+             xmlns:helpers="clr-namespace:CookingMaster.Helpers"
+             x:Class="CookingMaster.Views.Pages.HomePage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+
+        <DataTemplate x:Name="BottomSheetReadRecipe" x:Key="BottomSheetReadRecipe">
+            <ScrollView BackgroundColor="{StaticResource Primary}">
+                <VerticalStackLayout
+					Spacing="25"
+					Padding="30,0"
+					VerticalOptions="Center">
+
+
+                    <BoxView Color="{StaticResource YellowColorBet365}" CornerRadius="20" HeightRequest="4" WidthRequest="100" HorizontalOptions="CenterAndExpand" Margin="0, 20,0,0"/>
+
+                    <Label
+						Text="{Binding RecipeName}"
+						SemanticProperties.Hint="Title"
+						FontSize="16" Margin="0,10"
+						HorizontalOptions="Center" />
+                    <CollectionView Grid.Column="1" HorizontalOptions="CenterAndExpand"  Grid.Row="2" Margin="5,0" ItemsSource="{Binding Ingredients}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal"
+                                                         Span="2" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Ingredient">
+                                <Grid Padding="3">
+                                    <Image Source="{Binding IconPath}" WidthRequest="40" HeightRequest="40"/>
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label
+						Text="{Binding RecipeDescription}"
+						SemanticProperties.Hint="Description"
+						FontSize="14"
+						HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </DataTemplate>
+        <DataTemplate x:Name="BottomSheetNewRecipe" x:Key="BottomSheetNewRecipe">
+            <ScrollView BackgroundColor="{StaticResource Secondary}">
+                <VerticalStackLayout
+					Spacing="10"
+					Padding="10,0"
+					VerticalOptions="Center">
+                    <Entry Text="{Binding Title}" Placeholder="Title here..." HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray600}"/>
+                    <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Select Dish:" VerticalOptions="Center" TextColor="{StaticResource Gray600}"/>
+                        <Picker VerticalOptions="Center" Title="Select Dish" ItemsSource="{Binding TypeOfMeal}" TextColor="{StaticResource Gray600}" SelectedItem="{Binding SelectedTypeOfMeal}" />
+                    </HorizontalStackLayout>
+
+
+                    <Grid Padding="10,0,5,0" ColumnDefinitions="*, 30">
+                        <Entry Placeholder="Search Ingredient..."  
+                           x:Name="TxtSearchIngredient"
+                           Text="{Binding SearchIngredient}"
+                               TextColor="{StaticResource Gray600}"
+                           VerticalOptions="EndAndExpand"                          
+                           ClearButtonVisibility="WhileEditing"                            
+                           TextChanged="TxtSearchIngredient_TextChanged"/>
+                        <Button                    
+                    Grid.Column="1"   
+                        BackgroundColor="Transparent"
+                        Command="{Binding ListenCommand}"
+                    Margin="5,0"
+                            Opacity=".7"
+                    HorizontalOptions="EndAndExpand" 
+                    VerticalOptions="CenterAndExpand">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Microphone}"                                            
+                                     Color="{StaticResource Gray600}"
+                                     Size="26"/>
+                            </Button.ImageSource>
+                        </Button>
+
+                    </Grid>
+                    <Grid ColumnDefinitions="2*, *" HeightRequest="200">
+                        <BoxView Opacity=".4" CornerRadius="20" Color="{StaticResource Primary}"/>
+                        <CollectionView 
+                    x:Name="Ingredients"
+                    BackgroundColor="Transparent"
+            ItemsSource="{Binding FilteredIngredients}"
+            SelectionMode="None"                    
+                RemainingItemsThreshold="1">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                     Span="3"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Ingredient">
+                                    <Grid Padding="10" HeightRequest="60" BackgroundColor="Transparent">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}" 
+                                                          Tapped="TapIngredient_Tapped" />
+                                        </Grid.GestureRecognizers>
+
+                                        <Grid RowDefinitions="*, 13">
+                                            <Image Source="{Binding IconPath}"/>
+                                            <Label Text="{Binding IngredientName}" 
+                                           FontSize="9" 
+                                           Grid.Row="1" 
+                                           TextColor="{StaticResource Gray600}" 
+                                           HorizontalOptions="CenterAndExpand"/>
+                                        </Grid>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <CollectionView 
+                            Grid.Column="1"
+                    x:Name="CollViewTypeOfDish"                         
+                    ItemsSource="{Binding SelectedIngredients}"
+                        ItemsUpdatingScrollMode="KeepItemsInView"
+                            ItemSizingStrategy="MeasureAllItems"
+                    SelectionMode="None"
+                RemainingItemsThreshold="1"                   
+                >
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"  
+                                     Span="1"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid RowDefinitions="*, 2" Padding="3,1,0,1" ColumnDefinitions="3*,2*" HorizontalOptions="CenterAndExpand">
+                                        <Label FontSize="10" HorizontalTextAlignment="Center" Text="{Binding Amount}" TextColor="{StaticResource Gray600}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                        <Grid Grid.Column="1" Padding="3" HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                            <Grid RowDefinitions="*, 26" VerticalOptions="CenterAndExpand">
+                                                <Image Source="{Binding IconPath}"/>
+                                                <Label Text="{Binding Title}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                           FontSize="9" 
+                                           Grid.Row="1"      
+                                           TextColor="{StaticResource Gray600}" 
+                                           HorizontalOptions="CenterAndExpand"/>
+                                            </Grid>
+                                        </Grid>
+                                        <BoxView Grid.Row="1" Grid.ColumnSpan="2" Margin="5,0" HeightRequest="1" Opacity=".4" CornerRadius="20" Color="{StaticResource Primary}"/>
+                                    </Grid>
+                                    
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                    <Editor Placeholder="Description here..." Text="{Binding Description}" HeightRequest="80" HorizontalOptions="FillAndExpand" TextColor="{StaticResource Gray600}"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <Button FontSize="Body" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" Text="Save" HorizontalOptions="CenterAndExpand" Command="{Binding AddNewRecipeCommand}"/>
+                        <Button x:Name="BtnCancel" FontSize="Body" Grid.Column="1" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" Text="Cancel" 
+                                HorizontalOptions="CenterAndExpand" Clicked="BtnCancel_Clicked"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
+        </DataTemplate>
+        <DataTemplate x:Name="BottomSheetChooseQuantity" x:Key="BottomSheetChooseQuantity">
+            <ScrollView BackgroundColor="White">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, *, Auto, Auto">
+                    <Label Text="Choose the amount of the ingredient" HorizontalOptions="CenterAndExpand"/>
+                    <VerticalStackLayout Grid.Row="1" HorizontalOptions="CenterAndExpand">
+                        <RadioButton GroupName="RadioAmount" Content="Quantity" IsChecked="true" CheckedChanged="RadioAmount_SelectionChanged"/>
+                        <RadioButton GroupName="RadioAmount" Content="Cups" CheckedChanged="RadioAmount_SelectionChanged" />
+                        <RadioButton GroupName="RadioAmount" Content="Teaspoons" CheckedChanged="RadioAmount_SelectionChanged"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="CenterAndExpand">
+                        <RadioButton GroupName="RadioAmount" Content="Tablespoons" CheckedChanged="RadioAmount_SelectionChanged"/>
+                        <RadioButton GroupName="RadioAmount" Content="Milliliters" CheckedChanged="RadioAmount_SelectionChanged"/>
+                        <RadioButton GroupName="RadioAmount" Content="Grams" CheckedChanged="RadioAmount_SelectionChanged"/>
+                    </VerticalStackLayout>
+                    <Editor Grid.Row="2" Text="{Binding Amount}" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" Placeholder="{Binding SelectedRadioAmount}" WidthRequest="100"/>
+                    <Button Grid.Row="3" FontSize="Body" x:Name="BtnAddIngredient" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" Text="Add" 
+                            Clicked="BtnAddIngredient_Clicked" HorizontalOptions="CenterAndExpand"/>
+                    <Button Grid.Row="3" Grid.Column="1" x:Name="BtnClose" FontSize="Body" TextColor="{StaticResource Primary}" BackgroundColor="Transparent" Text="Cancel" 
+                                HorizontalOptions="CenterAndExpand" Clicked="BtnClose_Clicked"/>
+                </Grid>
+
+            </ScrollView>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto, *" BackgroundColor="{StaticResource Secondary}">
+        <Grid ColumnDefinitions="Auto,*, Auto" RowDefinitions="Auto, Auto" BackgroundColor="{StaticResource Primary}" xct:CornerRadiusEffect.CornerRadius="0, 0, 20, 20">
+
+            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" >
+                <Image  Aspect="AspectFill"                     
+                    Margin="5,0"
+                    HorizontalOptions="Start" 
+                    VerticalOptions="CenterAndExpand">
+                    <Image.Source>
+                        <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Home}"
+                                     Color="{StaticResource White}"
+                                     Size="26"/>
+                    </Image.Source>
+                </Image>
+                <Label Text="Recipes" TextColor="{StaticResource White}" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2" >
+                <Label Text="{Binding UserName}" TextColor="{StaticResource White}" VerticalOptions="Center" FontSize="Body"/>
+                <ImageButton  Aspect="AspectFill"                                                            
+                    Margin="5,3,5,0"
+                    HorizontalOptions="Start" 
+                    VerticalOptions="Center" Command="{Binding LogoutCommand}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Account}"
+                                     Color="{StaticResource White}"
+                                     Size="26"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </HorizontalStackLayout>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="3" Padding="10,5,5,5" ColumnDefinitions="*,3*,*">
+                <HorizontalStackLayout x:Name="StackNewRecipe" HorizontalOptions="StartAndExpand">
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="StackNewRecipe_Tapped" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <Image  Aspect="AspectFill"                                                            
+                    HorizontalOptions="Start" 
+                    VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.NewBox}"
+                                     Color="{StaticResource White}"
+                                     Size="26"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Recipe" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                    
+                </HorizontalStackLayout>
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                    BackgroundColor="#eee"
+                        HorizontalOptions="FillAndExpand"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="0">
+                    <Grid  Padding="5,0,5,0" >
+                        <Entry Placeholder="Search recipe..."  
+                           x:Name="TxtSearchRecipe"
+                           Text="{Binding SearchRecipe}"
+                               HorizontalOptions="FillAndExpand"
+                           VerticalOptions="EndAndExpand"                          
+                           ClearButtonVisibility="WhileEditing"                            
+                           TextChanged="Entry_TextChanged"/>
+
+                    </Grid>
+                </Border>
+                <HorizontalStackLayout Grid.Row="2" x:Name="StackFilter" Grid.Column="2" HorizontalOptions="EndAndExpand">
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="StackFilter_Tapped" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <Label Text="Filter" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"/>
+                    <Image  Aspect="AspectFill"                                                            
+                    HorizontalOptions="Start" 
+                    VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Filter}"
+                                     Color="{StaticResource White}"
+                                     Size="26"/>
+                        </Image.Source>
+                    </Image>
+                </HorizontalStackLayout>
+
+            </Grid>
+        </Grid>
+        <CollectionView      
+            Grid.Row="1"
+                    ItemsSource="{Binding FilteredRecipes}"
+                        ItemsUpdatingScrollMode="KeepItemsInView"
+                            ItemSizingStrategy="MeasureAllItems"                            
+                    SelectionMode="None"
+                RemainingItemsThreshold="1"                   
+                >
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="culRecipeModel:CulinaryRecipeResponse">
+                    <Grid Padding="3">
+                        <Border BackgroundColor="Transparent" HeightRequest="115" xct:CornerRadiusEffect.CornerRadius="20">
+                            <Grid ColumnDefinitions="*, 3*, 40" RowDefinitions="3*, 2*, 2*" Padding="5">
+                                <Grid RowDefinitions="16, *, 14" Grid.RowSpan="3">
+                                    <Label Text="{Binding CuisineType}" FontSize="12" HorizontalOptions="CenterAndExpand" TextColor="{StaticResource Gray600}" FontAttributes="Bold"/>
+                                    <Image Grid.Row="1" Margin="0,5,0,1" Source="{Binding CuisineType}" xct:CornerRadiusEffect.CornerRadius="5" Aspect="AspectFill"/>
+                                    <Label Grid.Row="2" Text="{Binding User.UserName}" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" FontSize="12" TextColor="{StaticResource Username}"/>
+                                </Grid>
+
+                                <VerticalStackLayout Grid.Column="1" Grid.ColumnSpan="2" Margin="5,0">
+                                    <Label Text="{Binding RecipeName}"  HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                           FontSize="12" FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray500}"/>
+                                    <BoxView BackgroundColor="{StaticResource Primary}" HeightRequest="1" Margin="25, 0"/>
+                                </VerticalStackLayout>
+
+                                <Button x:Name="ReadRecipeBtn" Text="Read recipe" Clicked="ReadRecipeBtn_Clicked" BackgroundColor="Transparent" CommandParameter="{Binding .}" Padding="5, 0" Grid.Column="1" Grid.Row="1" HorizontalOptions="CenterAndExpand" 
+                                        FontSize="Body" TextColor="{StaticResource Primary}"/>
+                                <skia:SKLottieView 
+                                    Padding="0"
+                                    Grid.Row="1"
+                                    Grid.RowSpan="2"
+                                        Grid.Column="2"
+                                        Source="star.json"
+                                        WidthRequest="100"
+                                        RepeatCount="-1"
+                                        SemanticProperties.Description="user"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"/>
+
+                                <CollectionView Grid.Column="1"  Grid.Row="2" Margin="5,0" ItemsSource="{Binding Ingredients}">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Horizontal"
+                                                         Span="1" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Ingredient">
+                                            <Grid Padding="3">
+                                                <Image Source="{Binding IconPath}" Aspect="AspectFill"/>
+                                            </Grid>
+
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

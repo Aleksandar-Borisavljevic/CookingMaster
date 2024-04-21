@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+                  xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="CookingMaster.Popups.RegisterPopup"
+                  xmlns:mopupanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                  x:DataType="viewmodel:RegisterViewModel"
+           xmlns:model ="clr-namespace:CookingMaster.Model"               
+       xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups" BackgroundColor="Transparent" CloseWhenBackgroundIsClicked="False">
+    <mopups:PopupPage.Animation>
+        <mopupanim:ScaleAnimation
+            DurationIn="700"
+            EasingIn="BounceOut"
+            PositionIn="Bottom"
+            PositionOut="Center"
+            ScaleIn="1"
+            ScaleOut="0.7"/>
+    </mopups:PopupPage.Animation>
+    <Frame BackgroundColor="White"
+           HasShadow="True"
+           Margin="20, 120"
+            BorderColor="{StaticResource Primary}"
+           CornerRadius="20">
+        <Frame.Shadow>
+            <Shadow Brush="{StaticResource Primary}"
+                    Radius="10"
+                    Offset="20,20"
+                    Opacity="0.8"/>
+        </Frame.Shadow>
+        <VerticalStackLayout VerticalOptions="Center">
+            <VerticalStackLayout IsEnabled="{Binding RegisterIsDisabled}">
+                <Label  TextColor="{StaticResource Primary}" Text="Registration form" HorizontalOptions="Center" FontSize="Subtitle"/>
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="0,10,0,0" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="user.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry IsEnabled="{Binding RegisterIsDisabled}" Text="{Binding UserName}"  Placeholder="Username" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="0,10,0,0" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="email.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry IsEnabled="{Binding RegisterIsDisabled}" Text="{Binding EmailAddress}" Placeholder="Email" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="0,10,0,0" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="password.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry IsEnabled="{Binding RegisterIsDisabled}" Text="{Binding Password}" IsPassword="True" Placeholder="Password" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="0,10" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Frame HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5" BorderColor="Transparent">
+                            <skia:SKLottieView 
+                Source="password.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="user"
+                VerticalOptions="Center"
+                HorizontalOptions="FillAndExpand"/>
+                        </Frame>
+                        <Entry IsEnabled="{Binding RegisterIsDisabled}" Text="{Binding ConfirmPassword}" IsPassword="True" Placeholder="Confirm Password" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Grid  ColumnDefinitions="*,*">
+                    <Button IsEnabled="{Binding RegisterIsDisabled}" Text="Register" CornerRadius="20"  HorizontalOptions="FillAndExpand" Margin="10,0" Command="{Binding RegisterCommand}"/>
+                    <Button Grid.Column="1" Text="Cancel" CornerRadius="20" HorizontalOptions="FillAndExpand" Margin="10,0" Command="{Binding CancelCommand}"/>
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding IsVerifyVisible}">
+                <Frame BackgroundColor="Transparent" BorderColor="{StaticResource Primary}" Margin="20,10,20,2" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <HorizontalStackLayout>
+                        <Entry Text="{Binding VerifyCode}" HorizontalOptions="Center" Margin="5,0,0,0" IsPassword="True"  Placeholder="Enter Verification code here" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+                <Label Text="Check your email" Margin="26,0,0,0"   FontSize="Small" TextColor="Red" Opacity=".7" VerticalOptions="CenterAndExpand"/>
+                <Button Grid.Column="1" HorizontalOptions="CenterAndExpand" Margin="0,5" Text="Confirm" CornerRadius="20"   Command="{Binding VerifyCommand}"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </Frame>
+</mopups:PopupPage>

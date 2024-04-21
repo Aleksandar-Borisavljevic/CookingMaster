@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+             x:Class="CookingMaster.Popups.CulinaryRecipePopup"
+                  xmlns:mopupanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+           xmlns:model ="clr-namespace:CookingMaster.Models.CulinaryRecipeModels"               
+       xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups" BackgroundColor="Transparent">
+    <mopups:PopupPage.Animation>
+        <mopupanim:ScaleAnimation
+            DurationIn="1700"
+            EasingIn="BounceOut"
+            PositionIn="Bottom"
+            PositionOut="Center"
+            ScaleIn="1"
+            ScaleOut="0.7"/>
+    </mopups:PopupPage.Animation>
+    <Border                            
+                Opacity=".9"
+                BackgroundColor="Black">
+        <Border WidthRequest="300"                       
+                HeightRequest="350"
+                BackgroundColor="{StaticResource White}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,40,40,40"/>
+            </Border.StrokeShape>
+            <Grid RowDefinitions="15, *, 50">
+                <ScrollView HorizontalOptions="Center"   
+                    VerticalOptions="StartAndExpand"
+                            Grid.Row="1"
+                    Padding="15, 0">
+                    <VerticalStackLayout >
+                        <Label 
+                            TextColor="{StaticResource Gray400}"
+            Text="{Binding Recipe}"
+            VerticalOptions="StartAndExpand" 
+            HorizontalOptions="CenterAndExpand" />
+                    </VerticalStackLayout>
+                </ScrollView>
+                <Grid Grid.Row="2" Margin="5" ColumnDefinitions="*,*">
+                    <Button 
+                    Text="Save" 
+                        Command="{Binding SaveCommand}"
+                    BackgroundColor="{StaticResource Primary}" 
+                    TextColor="{StaticResource White}" 
+                    HorizontalOptions="FillAndExpand"
+                    Margin="20,0,5, 0"/>
+                    <Button 
+                        Grid.Column="1"
+                    Text="Close" 
+                        Command="{Binding CloseCommand}"                   
+                    BackgroundColor="{StaticResource Primary}" 
+                    TextColor="{StaticResource White}" 
+                    HorizontalOptions="FillAndExpand"
+                    Margin="5,0,20, 0"/>
+                </Grid>
+
+            </Grid>
+
+        </Border>
+    </Border>
+
+
+</mopups:PopupPage>

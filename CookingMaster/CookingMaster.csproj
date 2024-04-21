@@ -1,0 +1,251 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+		<OutputType>Exe</OutputType>
+		<RootNamespace>CookingMaster</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>CookingMaster</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.cookingmaster</ApplicationId>
+		<ApplicationIdGuid>bde39d2a-9d68-446c-8566-6710e414c25c</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationId>com.cookbook.cookingmaster</ApplicationId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#68904D" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Remove="Resources\Raw\lottiespinner.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\materialdesignicons-webfont.ttf" />
+	  <None Remove="Resources\Images\allingredient.png" />
+	  <None Remove="Resources\Images\asparagus.png" />
+	  <None Remove="Resources\Images\bacon.png" />
+	  <None Remove="Resources\Images\Banana.png" />
+	  <None Remove="Resources\Images\basil.png" />
+	  <None Remove="Resources\Images\beefsteak.png" />
+	  <None Remove="Resources\Images\Blackberry.png" />
+	  <None Remove="Resources\Images\blackolive.png" />
+	  <None Remove="Resources\Images\bluegrape.png" />
+	  <None Remove="Resources\Images\broccoli.png" />
+	  <None Remove="Resources\Images\cabbage.png" />
+	  <None Remove="Resources\Images\cannedtuna.png" />
+	  <None Remove="Resources\Images\carrot.png" />
+	  <None Remove="Resources\Images\celeriac.png" />
+	  <None Remove="Resources\Images\cheese.png" />
+	  <None Remove="Resources\Images\cherry.png" />
+	  <None Remove="Resources\Images\cookingbg.jpg" />
+	  <None Remove="Resources\Images\dairyproduct.png" />
+	  <None Remove="Resources\Images\dotnet_bot.svg" />
+	  <None Remove="Resources\Images\dough.png" />
+	  <None Remove="Resources\Images\favorites.png" />
+	  <None Remove="Resources\Images\fruit.png" />
+	  <None Remove="Resources\Images\garlic.png" />
+	  <None Remove="Resources\Images\grain.png" />
+	  <None Remove="Resources\Images\greek.png" />
+	  <None Remove="Resources\Images\greenapple.png" />
+	  <None Remove="Resources\Images\honey.png" />
+	  <None Remove="Resources\Images\italian.jpg" />
+	  <None Remove="Resources\Images\italianbg.jpg" />
+	  <None Remove="Resources\Images\ketchup.png" />
+	  <None Remove="Resources\Images\kitchen.png" />
+	  <None Remove="Resources\Images\Kiwi.png" />
+	  <None Remove="Resources\Images\Lemon.png" />
+	  <None Remove="Resources\Images\lime.png" />
+	  <None Remove="Resources\Images\meat.png" />
+	  <None Remove="Resources\Images\mexican.png" />
+	  <None Remove="Resources\Images\milk.png" />
+	  <None Remove="Resources\Images\mykitchen.png" />
+	  <None Remove="Resources\Images\myrecipes.png" />
+	  <None Remove="Resources\Images\nuts.png" />
+	  <None Remove="Resources\Images\oliveoil.png" />
+	  <None Remove="Resources\Images\onion.png" />
+	  <None Remove="Resources\Images\Orange.png" />
+	  <None Remove="Resources\Images\oregano.png" />
+	  <None Remove="Resources\Images\other.jpg" />
+	  <None Remove="Resources\Images\pasta.png" />
+	  <None Remove="Resources\Images\peach.png" />
+	  <None Remove="Resources\Images\Pear.png" />
+	  <None Remove="Resources\Images\peas.png" />
+	  <None Remove="Resources\Images\pineapple.png" />
+	  <None Remove="Resources\Images\potato.png" />
+	  <None Remove="Resources\Images\Pumpkin.png" />
+	  <None Remove="Resources\Images\raspberry.png" />
+	  <None Remove="Resources\Images\redapple.png" />
+	  <None Remove="Resources\Images\redcabbage.png" />
+	  <None Remove="Resources\Images\redchillipepper.png" />
+	  <None Remove="Resources\Images\salami.png" />
+	  <None Remove="Resources\Images\salmon.png" />
+	  <None Remove="Resources\Images\salt.png" />
+	  <None Remove="Resources\Images\sausage.png" />
+	  <None Remove="Resources\Images\seafood.png" />
+	  <None Remove="Resources\Images\spices.png" />
+	  <None Remove="Resources\Images\spicysalamirolls.png" />
+	  <None Remove="Resources\Images\star.png" />
+	  <None Remove="Resources\Images\strawberries.png" />
+	  <None Remove="Resources\Images\sugar.png" />
+	  <None Remove="Resources\Images\tilapia.png" />
+	  <None Remove="Resources\Images\tomato_sauce.png" />
+	  <None Remove="Resources\Images\vegetables.png" />
+	  <None Remove="Resources\Images\vegeterianbg.jpg" />
+	  <None Remove="Resources\Images\yogurt.png" />
+	  <None Remove="Resources\Raw\email.json" />
+	  <None Remove="Resources\Raw\forgotpassword.json" />
+	  <None Remove="Resources\Raw\logincooking.json" />
+	  <None Remove="Resources\Raw\loginlottie.json" />
+	  <None Remove="Resources\Raw\password.json" />
+	  <None Remove="Resources\Raw\spinner.json" />
+	  <None Remove="Resources\Raw\star.json" />
+	  <None Remove="Resources\Raw\user.json" />
+	  <None Remove="Resources\Raw\vegeterian.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Mopups" Version="1.1.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.83" />
+		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+		<PackageReference Include="Xamarin.CommunityToolkit.MauiCompat" Version="2.0.2-preview1013" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Languages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Popups\ForgotPasswordPopup.xaml.cs">
+	    <DependentUpon>ForgotPasswordPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Popups\IngredientDescriptionPopup.xaml.cs">
+	    <DependentUpon>IngredientDescriptionPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Popups\RegisterPopup.xaml.cs">
+	    <DependentUpon>RegisterPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Popups\SpinnerPopup.xaml.cs">
+	    <DependentUpon>SpinnerPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Popups\CulinaryRecipePopup.xaml.cs">
+	    <DependentUpon>CulinaryRecipePopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Pages\MyKitchenPage.xaml.cs">
+	    <DependentUpon>MyKitchenPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Pages\MyCookBookPage.xaml.cs">
+	    <DependentUpon>MyCookBookPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Pages\StartAppPage.xaml.cs">
+	    <DependentUpon>StartAppPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Popups\ForgotPasswordPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\RegisterPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\SpinnerPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\CulinaryRecipePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\IngredientDescriptionPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\IllustrationsCarouselView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\WonderTitle.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\MyCookBookPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pages\StartAppPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionCookingMasterHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
+</Project>

@@ -1,0 +1,298 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:CookingMaster.Models"
+             xmlns:viewmodel ="clr-namespace:CookingMaster.ViewModels"
+             xmlns:helpers="clr-namespace:CookingMaster.Helpers"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="CookingMaster.Views.Pages.MyKitchenPage" Title="Ingredients"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="Black" />
+                                <Setter Property="Opacity"
+                                        Value=".5" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto ,80, *" BackgroundColor="{StaticResource Secondary}">
+        <Grid ColumnDefinitions="Auto,*, Auto" RowDefinitions="Auto, Auto" BackgroundColor="{StaticResource Primary}" xct:CornerRadiusEffect.CornerRadius="0, 0, 20, 20">
+            <Image  Aspect="AspectFill" 
+                    
+                    Margin="5,0"
+                    HorizontalOptions="Start" 
+                    VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Home}"
+                                     Color="White"
+                                     Size="26"/>
+                </Image.Source>
+            </Image>
+            <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Spacing="10">
+                <Label Text="My Kitchen" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                <Label Text=">" Rotation="90" VerticalTextAlignment="Center" ScaleY="1.5" FontSize="16"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2" >
+                <Label Text="{Binding UserName}" VerticalOptions="Center" FontSize="Body"/>
+                <ImageButton  Aspect="AspectFill"                                                            
+                    Margin="5,3,5,0"
+                    HorizontalOptions="Start" 
+                    VerticalOptions="CenterAndExpand" Command="{Binding LogoutCommand}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Logout}"
+                                     Color="White"
+                                     Size="26"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </HorizontalStackLayout>
+
+            <Border Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    BackgroundColor="#eee"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="0"
+                    Margin="25,3">
+                <Grid Padding="10,0,5,0" ColumnDefinitions="*, 30">
+                    <Entry Placeholder="Search Ingredient..."  
+                           x:Name="TxtSearchIngredient"
+                           Text="{Binding SearchIngredient}"                           
+                           VerticalOptions="EndAndExpand"                          
+                           ClearButtonVisibility="WhileEditing"                            
+                           TextChanged="Entry_TextChanged"/>
+                    <Button                    
+                    Grid.Column="1"   
+                        BackgroundColor="Transparent"
+                        Command="{Binding ListenCommand}"
+                    Margin="5,0"
+                            Opacity=".7"
+                    HorizontalOptions="EndAndExpand" 
+                    VerticalOptions="CenterAndExpand">
+                        <Button.ImageSource>
+                            <FontImageSource FontFamily="IconFontTypes"
+                                     Glyph="{Static helpers:IconFont.Microphone}"                                            
+                                     Color="Black"
+                                     Size="26"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </Grid>
+            </Border>
+        </Grid>
+        <CollectionView x:Name="TabsView"
+                        Grid.Row="1"
+                            ItemsSource="{Binding Tabs}"
+                            ItemsUpdatingScrollMode="KeepItemsInView"
+                            ItemSizingStrategy="MeasureAllItems"
+                            SelectedItem="{Binding SelectedTab}"
+                            SelectionChangedCommand="{Binding Path=BindingContext.TabChangedCommand,
+                                                              Source={x:Reference TabsView}}"
+                            SelectionChangedCommandParameter="{Binding SelectedTab}"
+                            SelectionMode="Single">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowSpacing="0" RowDefinitions="5*, 5*,3">
+                        <Image Source="{Binding IconPath}" HeightRequest="43" WidthRequest="43"/>
+                        <Label Grid.Row="1"
+                                       Text="{Binding TabTitle}"
+                               WidthRequest="110"
+                                       TextColor="Black"
+                                       Padding="20,0"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       FontSize="12" />
+                        <BoxView Grid.Row="2" 
+                                   Color="{x:StaticResource Primary}"
+                                   IsVisible="{Binding IsSelected}"/>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value=".8" />
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="1" />
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                    </Grid>
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid RowDefinitions="*,*" Grid.Row="2" Padding="5">
+            <Grid RowDefinitions="*" Margin="0,0,0,10">
+                <BoxView Opacity=".4" CornerRadius="20" />
+                <CollectionView 
+                    x:Name="Ingredients"                    
+                    BackgroundColor="Transparent"
+            ItemsSource="{Binding IngredientsBySelectedTab}"
+            SelectionMode="None"                    
+                RemainingItemsThreshold="1">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                     Span="5"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Ingredient">
+                            <Grid Padding="10" HeightRequest="77" BackgroundColor="Transparent" 
+                                  xct:TouchEffect.LongPressCommand="{Binding BindingContext.GetDescriptionCommand, Source={x:Reference Ingredients}}"
+                                  xct:TouchEffect.LongPressCommandParameter="{Binding .}"
+                                  xct:TouchEffect.NormalBackgroundColor="Transparent"
+                                  xct:TouchEffect.PressedScale="1.3" 
+                                  xct:TouchEffect.PressedAnimationDuration="3" 
+                                  xct:TouchEffect.PressedBackgroundColor="Transparent"                              >
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}" 
+                                                          Tapped="TapIngredient_Tapped" />
+                                </Grid.GestureRecognizers>
+
+                                <Grid RowDefinitions="*, 24" HorizontalOptions="CenterAndExpand">
+                                    <Image Source="{Binding IconPath}"/>
+                                    <Label Text="{Binding IngredientName}" 
+                                           FontSize="9" 
+                                           Grid.Row="1" 
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"
+                                           TextColor="{StaticResource Gray500}" 
+                                           HorizontalOptions="CenterAndExpand"/>
+                                </Grid>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <Grid ColumnDefinitions="5*, 2*" RowDefinitions="25, *" Grid.Row="1">
+                <BoxView Opacity=".4" CornerRadius="20" Grid.Row="1"/>
+                <Label Text="You must be logged in to save ingredients." 
+                       IsVisible="{Binding IsLoggedIn}" Grid.Row="1" 
+                       HorizontalTextAlignment="Center" 
+                       TextColor="{StaticResource Gray400}" 
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"/>
+                <Image Source="mykitchen"  VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <CollectionView 
+                    x:Name="CollViewMyKitchen"
+                    Grid.Row="1"
+                    ItemsSource="{Binding MyKitchen}"
+                    SelectionMode="Multiple"
+                RemainingItemsThreshold="1">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                     Span="3"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Ingredient">
+                            <Grid Padding="3" HeightRequest="60" xct:TouchEffect.LongPressCommand="{Binding BindingContext.RemoveIngredientCommand, Source={x:Reference Ingredients}}"
+                                  xct:TouchEffect.LongPressCommandParameter="{Binding .}"
+                                  xct:TouchEffect.NormalBackgroundColor="Transparent"
+                                  xct:TouchEffect.PressedScale="1.3" 
+                                  xct:TouchEffect.PressedAnimationDuration="3" 
+                                  xct:TouchEffect.PressedBackgroundColor="Transparent" >
+
+                                <Grid RowDefinitions="*, 15" >
+                                    <Image Source="{Binding IconPath}"/>
+                                    <Label Text="{Binding IngredientName}" 
+                                        FontSize="9" 
+                                        Grid.Row="1" 
+                                        FontAttributes="Bold"
+                                        HorizontalTextAlignment="Center"
+                                        TextColor="{StaticResource Gray500}" 
+                                        HorizontalOptions="CenterAndExpand"/>
+                                </Grid>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Grid Grid.Column="1" Grid.Row="1" RowDefinitions="*, 35"  VerticalOptions="CenterAndExpand" >
+                    <CollectionView 
+                    x:Name="CollViewTypeOfDish"                         
+                    ItemsSource="{Binding TabsTypeOfDish}"
+                        ItemsUpdatingScrollMode="KeepItemsInView"
+                            ItemSizingStrategy="MeasureAllItems"
+                            SelectedItem="{Binding SelectedTabTypeOfDish}"
+                            SelectionChangedCommand="{Binding Path=BindingContext.TabChangedTypeOfDishCommand,
+                                                              Source={x:Reference TabsView}}"
+                            SelectionChangedCommandParameter="{Binding SelectedTabTypeOfDish}"
+                    SelectionMode="Single"
+                RemainingItemsThreshold="1"                   
+                >
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                     Span="1"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="3" HeightRequest="30">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Opacity" Value=".8" />
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Opacity" Value="1" />
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Grid RowDefinitions="*, 3">
+                                        <Label Text="{Binding TabTitle}" 
+                                           FontSize="10" 
+                                           TextColor="{StaticResource Gray500}" 
+                                           HorizontalOptions="CenterAndExpand"/>
+                                        <BoxView Grid.Row="2"
+                                                 Margin="5,0"
+                                   Color="{x:StaticResource Primary}"
+                                   IsVisible="{Binding IsSelected}"/>
+                                    </Grid>
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Button x:Name="GetRecipe" 
+                            Grid.Row="1"
+                            FontSize="12"
+                            Margin="5, 0"
+                            Text="Cook a meal"  
+                            Clicked="GetRecipe_Clicked"/>
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>
